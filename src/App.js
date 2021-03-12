@@ -1,6 +1,9 @@
+// import Header from "components/Header";
+// import NotFound from "components/NotFound";
 import React, { Suspense } from "react";
-import { BrowserRouter, Link, Redirect, Route, Switch } from "react-router-dom";
-import "./App.css";
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+import "./App.scss";
+import Header from "./components/Header";
 import NotFound from "./components/NotFound";
 
 //Lazy load - code splitting là mới vào không load ngay mà vào /photos mới load
@@ -10,7 +13,8 @@ function App() {
     <div className="photo-app">
       <Suspense fallback={<div>loading ...</div>}>
         <BrowserRouter>
-          <ul>
+          <Header />
+          {/* <ul>
             <li>
               <Link to="/photos">go to photo page</Link>
             </li>
@@ -20,11 +24,11 @@ function App() {
             <li>
               <Link to="/photos/edit">go to Edit photo page</Link>
             </li>
-          </ul>
+          </ul> */}
           <Switch>
-            <Redirect exact form="/" to="photos" />
-            <Route path="/photos" componen={Photo} />
-            <Route componen={NotFound} />
+            <Redirect exact from="/" to="/photos" />
+            <Route path="/photos" component={Photo} />
+            <Route component={NotFound} />
           </Switch>
         </BrowserRouter>
       </Suspense>
