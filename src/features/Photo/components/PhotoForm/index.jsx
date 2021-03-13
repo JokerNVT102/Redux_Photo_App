@@ -1,10 +1,12 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Button, Form, FormGroup, Input, Label } from "reactstrap";
 // select đẹp đẽ hơn
-import Select from "react-select";
 import PHOTO_CATEGORY_OPTIONS from "constants/global";
-import Images from "constants/images";
+import InputField from "custom-fields/InputField";
+import RandomPhotoField from "custom-fields/RandomPhotoField";
+import SelectField from "custom-fields/SelectField";
+import { FastField, Form, Formik } from "formik";
+import PropTypes from "prop-types";
+import React from "react";
+import { Button, FormGroup } from "reactstrap";
 PhotoForm.propTypes = {
   onSubmit: PropTypes.func,
 };
@@ -14,41 +16,49 @@ PhotoForm.defaultProps = {
 };
 
 function PhotoForm(props) {
+  const initialValues = {
+    title: "",
+    categoryId: null,
+  };
   return (
-    <Form>
-      <FormGroup>
-        <Label for="titleId">Title</Label>
-        <Input name="title" id="titleId" placeholder="Eg: Wow nature ..." />
-      </FormGroup>
-
-      <FormGroup>
-        <Label for="categoryId">Category</Label>
-
-        <Select
-          id="categoryId"
-          name="categoryId"
-          placeholder="What's your photo category?"
-          options={PHOTO_CATEGORY_OPTIONS}
-        />
-      </FormGroup>
-
-      <FormGroup>
-        <Label for="categoryId"> Photo</Label>
-        <div>
-          <Button type="button" outline color="primary">
-            {" "}
-            Random a photo
-          </Button>
-        </div>
-        <div>
-          <img src={Images.COLORFUL_BG} width="200px" height="200px" alt="" />
-        </div>
-      </FormGroup>
-
-      <FormGroup>
-        <Button color="primary"> add a album</Button>
-      </FormGroup>
-    </Form>
+    <Formik
+      initialValues={initialValues}
+      onSubmit={(values) => console.log("onSubmit :", values)}
+    >
+      {(formikProps) => {
+        //do something here ...
+        const { values, errors, touched } = formikProps;
+        console.log({ values, errors, touched });
+        return (
+          <Form>
+            <FastField
+              name="title" //ten control
+              component={InputField}
+              label="Title"
+              placeholder="Eg: Wow nature ..."
+            />
+            <FastField
+              name="categoryId" //ten control
+              component={SelectField}
+              label="Category"
+              placeholder="What's your photo category?"
+              options={PHOTO_CATEGORY_OPTIONS}
+            />
+            <FastField
+              name="photo" //ten control
+              component={RandomPhotoField}
+              label="Photo"
+            />
+            <FormGroup>
+              <Button type="submit" color="primary">
+                {" "}
+                add a album
+              </Button>
+            </FormGroup>
+          </Form>
+        );
+      }}
+    </Formik>
   );
 }
 
